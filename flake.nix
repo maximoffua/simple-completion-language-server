@@ -15,8 +15,13 @@
       let
         pkgs = import nixpkgs { inherit system; };
         naersk-lib = pkgs.callPackage naersk { };
+        package = naersk-lib.buildPackage ./.;
       in {
-        defaultPackage = naersk-lib.buildPackage ./.;
+        packages = {
+          simple-completion-language-server = package;
+          default = package;
+        };
+        defaultPackage = package;
         devShell = with pkgs;
           mkShell {
             buildInputs =
